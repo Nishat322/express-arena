@@ -28,7 +28,7 @@ app.get('/pizza/peporoni',(req,res) => {
 });
 
 app.get('/pizza/pineapple',(req,res) => {
-    res.send("We don't serve that here. Never call again!");
+    res.send('We don\'t serve that here. Never call again!');
 });
 
 app.get('/echo',(req,res) => {
@@ -45,6 +45,49 @@ app.get('/queryViewer',(req,res) => {
     console.log(req.query);
     res.end(); //do not send any data back to the client 
 });
+
+app.get('/greeting',(req,res) => {
+    //values from the request
+    const name = req.query.name;
+    const race = req.query.race;
+
+    //validate the values (do not trustthe client)
+    //send error message if values do not exist
+    if(!name){
+        return res.status(400).send('Please provide a name');
+    }
+    //status() => sends a call to the status method of the response object 
+    //sets a status of 400 Bad request to the error response 
+    if(!race){
+        return res.status(400).send('Please provide a race');
+    }
+    //after validation use the values 
+    const greeting = `Greeting ${name} the ${race}, welcome!`;
+    //send values to client
+    res.send(greeting);
+});
+
+/********************************* ASSIGNMENT *************************************/
+app.get('/sum', (req,res) => {
+    const a = parseInt(req.query.a,10);
+    const b = parseInt(req.query.b,10);
+
+    if(!a) {
+        res.status(400).send ('Please provide a');
+    }
+
+    if(!b){
+        res.status(400).send('Please provide b');
+    }
+
+    const sum = a + b;
+    res.send(`The sum of ${a} and ${b} is ${sum}`);
+});
+
+
+
+
+
 //assigns a port for the server to be listening at 
 app.listen(8080, () => {
     console.log('Express server is listening on port 8080!');
@@ -52,3 +95,4 @@ app.listen(8080, () => {
 
 //npm start --> logs Express server is listening on port 8080! to terminal 
 //and Hello Express! to browser
+//npm run dev --> add script dev: nodemon app, automatically updates server while making updates
